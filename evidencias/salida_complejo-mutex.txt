@@ -1,0 +1,46 @@
+==================================================================
+TIPO COMPLEJO (dict + list) - con mutex
+==================================================================
+Estado inicial:
+  'El Principito': 1 de 3 copia(s) disponible(s)
+  'Cien años de soledad': 1 de 2 copia(s) disponible(s)
+  Historial (0 movimiento(s)):
+Hilos:
+  - Ana: prestar 'El Principito'
+  - Luis: prestar 'El Principito'
+  - Carlos: devolver 'Cien años de soledad'
+  - María: devolver 'Cien años de soledad'
+  - Sofía: consultar 'El Principito'
+
+[0.000s] Ana pide 'El Principito' y espera el mutex
+[0.000s] Ana [LOCK] entra a la sección crítica
+[0.000s] Ana consulta 'El Principito': 1 copia(s) disponible(s)
+[0.000s] Luis pide 'El Principito' y espera el mutex
+[0.000s] Carlos quiere devolver 'Cien años de soledad' y espera el mutex
+[0.000s] María quiere devolver 'Cien años de soledad' y espera el mutex
+[0.103s] Ana recibe 'El Principito' -> quedan 0
+[0.103s] Ana [UNLOCK] sale de la sección crítica
+[0.103s] Luis [LOCK] entra a la sección crítica
+[0.103s] Luis consulta 'El Principito': 0 copia(s) disponible(s)
+[0.103s] Luis: préstamo de 'El Principito' rechazado, no hay copias
+[0.103s] Luis [UNLOCK] sale de la sección crítica
+[0.103s] Carlos [LOCK] entra a la sección crítica
+[0.103s] Carlos consulta 'Cien años de soledad': 1 de 2 disponible(s)
+[0.213s] Carlos devuelve 'Cien años de soledad' -> quedan 2
+[0.213s] Carlos [UNLOCK] sale de la sección crítica
+[0.213s] María [LOCK] entra a la sección crítica
+[0.213s] María consulta 'Cien años de soledad': 2 de 2 disponible(s)
+[0.213s] María: devolución de 'Cien años de soledad' rechazada, no falta ninguna copia
+[0.214s] María [UNLOCK] sale de la sección crítica
+[0.214s] Sofía consulta 'El Principito': 0 copia(s) disponible(s)
+
+Estado final:
+  'El Principito': 0 de 3 copia(s) disponible(s)
+  'Cien años de soledad': 2 de 2 copia(s) disponible(s)
+  Historial (2 movimiento(s)):
+    - Ana: préstamo de 'El Principito'
+    - Carlos: devolución de 'Cien años de soledad'
+
+OK: 'El Principito' -> 1 de 2 préstamo(s) aceptado(s), quedan 0 disponible(s).
+OK: 'Cien años de soledad' -> 1 de 2 devolución(es) aceptada(s), quedan 2 disponible(s).
+Resultado: CONSISTENTE

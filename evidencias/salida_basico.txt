@@ -1,0 +1,19 @@
+==================================================================
+TIPO BÁSICO (int) - sin sincronización
+==================================================================
+Estado inicial:
+  'El Principito': 1 copia(s) disponible(s)
+Hilos:
+  - Ana: prestar 'El Principito'
+  - Luis: prestar 'El Principito'
+
+[0.000s] Ana consulta: 1 copia(s) disponible(s)
+[0.000s] Luis consulta: 1 copia(s) disponible(s)
+[0.107s] Luis recibe el libro -> quedan 0
+[0.107s] Ana recibe el libro -> quedan -1
+
+Estado final:
+  'El Principito': -1 copia(s) disponible(s)
+
+ERROR: se prestaron 2 copia(s) de 'El Principito' cuando solo había 1 disponible(s); el contador quedó en -1.
+Resultado: INCONSISTENTE (condición de carrera)

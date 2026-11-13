@@ -1,0 +1,36 @@
+==================================================================
+TIPO COMPLEJO (dict + list) - sin sincronización
+==================================================================
+Estado inicial:
+  'El Principito': 1 de 3 copia(s) disponible(s)
+  'Cien años de soledad': 1 de 2 copia(s) disponible(s)
+  Historial (0 movimiento(s)):
+Hilos:
+  - Ana: prestar 'El Principito'
+  - Luis: prestar 'El Principito'
+  - Carlos: devolver 'Cien años de soledad'
+  - María: devolver 'Cien años de soledad'
+  - Sofía: consultar 'El Principito'
+
+[0.000s] Ana consulta 'El Principito': 1 copia(s) disponible(s)
+[0.000s] Luis consulta 'El Principito': 1 copia(s) disponible(s)
+[0.000s] Carlos consulta 'Cien años de soledad': 1 de 2 disponible(s)
+[0.000s] María consulta 'Cien años de soledad': 1 de 2 disponible(s)
+[0.000s] Sofía consulta 'El Principito': 1 copia(s) disponible(s)
+[0.105s] Ana recibe 'El Principito' -> quedan 0
+[0.107s] Luis recibe 'El Principito' -> quedan -1
+[0.107s] Carlos devuelve 'Cien años de soledad' -> quedan 2
+[0.107s] María devuelve 'Cien años de soledad' -> quedan 3
+
+Estado final:
+  'El Principito': -1 de 3 copia(s) disponible(s)
+  'Cien años de soledad': 3 de 2 copia(s) disponible(s)
+  Historial (4 movimiento(s)):
+    - Ana: préstamo de 'El Principito'
+    - Luis: préstamo de 'El Principito'
+    - Carlos: devolución de 'Cien años de soledad'
+    - María: devolución de 'Cien años de soledad'
+
+ERROR: se prestaron 2 copia(s) de 'El Principito' cuando solo había 1 disponible(s); el contador quedó en -1.
+ERROR: se aceptaron 2 devoluciones de 'Cien años de soledad' y quedaron 3 copias disponibles, más de las que existen.
+Resultado: INCONSISTENTE (condición de carrera)

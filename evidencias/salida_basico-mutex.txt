@@ -1,0 +1,25 @@
+==================================================================
+TIPO BÁSICO (int) - con mutex
+==================================================================
+Estado inicial:
+  'El Principito': 1 copia(s) disponible(s)
+Hilos:
+  - Ana: prestar 'El Principito'
+  - Luis: prestar 'El Principito'
+
+[0.000s] Ana pide el libro y espera el mutex
+[0.000s] Ana [LOCK] entra a la sección crítica
+[0.000s] Ana consulta: 1 copia(s) disponible(s)
+[0.000s] Luis pide el libro y espera el mutex
+[0.109s] Ana recibe el libro -> quedan 0
+[0.109s] Ana [UNLOCK] sale de la sección crítica
+[0.109s] Luis [LOCK] entra a la sección crítica
+[0.109s] Luis consulta: 0 copia(s) disponible(s)
+[0.109s] Luis: solicitud rechazada, no hay copias
+[0.109s] Luis [UNLOCK] sale de la sección crítica
+
+Estado final:
+  'El Principito': 0 copia(s) disponible(s)
+
+OK: 'El Principito' -> 1 de 2 préstamo(s) aceptado(s), quedan 0 disponible(s).
+Resultado: CONSISTENTE

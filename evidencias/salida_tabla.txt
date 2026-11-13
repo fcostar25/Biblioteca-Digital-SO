@@ -1,0 +1,13 @@
+TABLA DE RESULTADOS (20 corridas por escenario)
++----------------------+-----------------+-----------------------------------+---------+-------------+-----------+-------+----------------+
+| Representación       | Versión         | Operación                         | Inicial | Solicitudes | Aceptadas | Final | Inconsistentes |
++----------------------+-----------------+-----------------------------------+---------+-------------+-----------+-------+----------------+
+| Básico (int)         | Sin sincronizar | Préstamo 'El Principito'          | 1       | 2           | 2         | -1    | 20/20          |
+| Básico (int)         | Mutex           | Préstamo 'El Principito'          | 1       | 2           | 1         | 0     | 0/20           |
+| Complejo (dict+list) | Sin sincronizar | Préstamo 'El Principito'          | 1       | 2           | 2         | -1    | 20/20          |
+| Complejo (dict+list) | Sin sincronizar | Devolución 'Cien años de soledad' | 1       | 2           | 2         | 3     | 20/20          |
+| Complejo (dict+list) | Mutex           | Préstamo 'El Principito'          | 1       | 2           | 1         | 0     | 0/20           |
+| Complejo (dict+list) | Mutex           | Devolución 'Cien años de soledad' | 1       | 2           | 1         | 2     | 0/20           |
++----------------------+-----------------+-----------------------------------+---------+-------------+-----------+-------+----------------+
+Inicial/Final = copias disponibles antes y después de la simulación.
+Inconsistentes = corridas en que las copias quedaron fuera de rango (< 0 o > total).
