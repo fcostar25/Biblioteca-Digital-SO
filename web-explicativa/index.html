@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La última copia · Biblioteca Digital SO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <nav class="nav">
+    <span class="nav__brand">Biblioteca Digital · SO</span>
+    <div class="nav__links">
+      <a href="#personajes">Personajes</a>
+      <a href="#simulador">Simulador</a>
+      <a href="#resultado">Resultado</a>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero container">
+    <p class="eyebrow">SISTEMAS OPERATIVOS · CONDICIONES DE CARRERA</p>
+    <h1>La última copia</h1>
+    <p class="lead">
+      Dos hilos piden el mismo libro al mismo tiempo. Sin sincronización, la
+      biblioteca presta una copia que no existe. Mira paso a paso por qué pasa
+      y cómo un mutex lo evita.
+    </p>
+    <div class="ctas">
+      <a class="btn btn--primary" href="#simulador">Ver simulación</a>
+      <a class="btn btn--ghost" href="#personajes">Conocer a los personajes</a>
+    </div>
+  </header>
+
+  <!-- ============ 01 PERSONAJES ============ -->
+  <section id="personajes" class="section container">
+    <p class="eyebrow">01 · LOS PERSONAJES</p>
+    <h2>Quién es quién en la simulación</h2>
+    <p class="sub">Cada elemento visual representa una parte real del código del proyecto.</p>
+
+    <div class="cards">
+      <article class="card">
+        <div class="card__icon"><span class="avatar avatar--sm" style="--c: var(--blue)"></span></div>
+        <div><h3>Ana = un hilo</h3><code>Usuario(threading.Thread)</code></div>
+      </article>
+      <article class="card">
+        <div class="card__icon"><span class="avatar avatar--sm" style="--c: var(--pink)"></span></div>
+        <div><h3>Luis = otro hilo</h3><code>corre al mismo tiempo que Ana</code></div>
+      </article>
+      <article class="card">
+        <div class="card__icon"><span class="shelf-mini"><span class="book book--sm"></span></span></div>
+        <div><h3>Estantería = recurso compartido</h3><code>self.inventario (una sola instancia)</code></div>
+      </article>
+      <article class="card">
+        <div class="card__icon"><span class="book"></span></div>
+        <div><h3>Libro = una copia disponible</h3><code>inventario[titulo]['disponibles']</code></div>
+      </article>
+      <article class="card">
+        <div class="card__icon"><span class="tag">ve 1</span></div>
+        <div><h3>Etiqueta = estado del actor</h3><code>lo que el hilo ve en este momento</code></div>
+      </article>
+      <article class="card">
+        <div class="card__icon"><span class="panel-mini"><i></i><i></i><i></i></span></div>
+        <div><h3>Panel = diálogo en orden</h3><code>como el log del programa</code></div>
+      </article>
+      <article class="card">
+        <div class="card__icon"><span class="hourglass"></span></div>
+        <div><h3>Reloj = procesando</h3><code>time.sleep(DEMORA)</code></div>
+      </article>
+      <article class="card">
+        <div class="card__icon"><span class="key-icon"></span></div>
+        <div><h3>Llave = el mutex</h3><code>threading.Lock()</code></div>
+      </article>
+      <article class="card">
+        <div class="card__icon"><span class="book book--ghost">?</span></div>
+        <div><h3>Libro fantasma = error</h3><code>una copia que no existe (−1)</code></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ 02 SIMULADOR ============ -->
+  <section id="simulador" class="section section--sim">
+    <div class="container container--wide">
+      <p class="eyebrow">02 · SIMULADOR</p>
+      <div class="sim-top">
+        <h2>Paso a paso: la carrera por la última copia</h2>
+        <div class="seg" role="tablist" aria-label="Modo de la simulación">
+          <button class="seg__btn is-active" data-mode="sin" role="tab">Sin sincronización</button>
+          <button class="seg__btn" data-mode="mutex" role="tab">Con mutex</button>
+        </div>
+      </div>
+
+      <!-- Tres paneles: cada uno se puede minimizar con el botón "—" -->
+      <div class="panels">
+
+        <!-- Panel 1: Escena -->
+        <section class="panel panel--escena" data-panel="escena">
+          <header class="panel__head">
+            <div class="panel__title"><strong>Escena</strong></div>
+            <div class="panel__actions">
+              <button class="icon-btn js-min" aria-label="Minimizar escena" title="Minimizar">—</button>
+            </div>
+          </header>
+          <div class="panel__strip">
+            <button class="icon-btn js-max" aria-label="Expandir escena" title="Expandir">⇤</button>
+            <span>Escena</span>
+          </div>
+          <div class="panel__body">
+            <div class="stage" id="stage">
+              <div class="counter">El Principito — disponibles: <b id="counter">1</b></div>
+
+              <span class="alert-label" id="alertLabel">¡ventana de carrera!</span>
+              <div class="alert-box" id="alertBox"></div>
+
+              <div class="shelf" id="shelf">
+                <span class="slot" style="left:34px"></span>
+                <span class="slot" style="left:84px"></span>
+                <div class="plank"></div>
+                <div class="decor"><i></i><i></i><i></i><i></i><i></i></div>
+              </div>
+
+              <span class="book stage-book" id="book"></span>
+              <span class="book book--ghost stage-book" id="ghost">?</span>
+
+              <span class="key-icon stage-key" id="key"></span>
+              <span class="lock-label" id="lockLabel">lock: libre</span>
+
+              <div class="actor" id="ana" style="--c: var(--blue)">
+                <div class="actor__status"><span class="hourglass"></span><span class="tag"></span></div>
+                <span class="avatar"></span>
+                <strong>Ana</strong><small>hilo 1</small>
+              </div>
+              <div class="actor" id="luis" style="--c: var(--pink)">
+                <div class="actor__status"><span class="hourglass"></span><span class="tag"></span></div>
+                <span class="avatar"></span>
+                <strong>Luis</strong><small>hilo 2</small>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Panel 2: Diálogo -->
+        <section class="panel panel--dialogo" data-panel="dialogo">
+          <header class="panel__head">
+            <div class="panel__title"><strong>Diálogo</strong><small>en orden</small></div>
+            <div class="panel__actions">
+              <button class="icon-btn js-min" aria-label="Minimizar diálogo" title="Minimizar">—</button>
+            </div>
+          </header>
+          <div class="panel__strip">
+            <button class="icon-btn js-max" aria-label="Expandir diálogo" title="Expandir">⇤</button>
+            <span>Diálogo</span>
+          </div>
+          <div class="panel__body">
+            <ul class="dialog" id="dialog"></ul>
+          </div>
+        </section>
+
+        <!-- Panel 3: Código -->
+        <section class="panel panel--codigo" data-panel="codigo">
+          <header class="panel__head">
+            <div class="panel__title"><strong>Código</strong><small id="codeClass">prestar()</small></div>
+            <div class="panel__actions">
+              <div class="tabs" role="tablist" aria-label="Versión del código">
+                <button class="tabs__btn is-active" data-variante="basica" role="tab">Básica</button>
+                <button class="tabs__btn" data-variante="compleja" role="tab">Compleja</button>
+              </div>
+              <button class="icon-btn js-min" aria-label="Minimizar código" title="Minimizar">—</button>
+            </div>
+          </header>
+          <div class="panel__strip">
+            <button class="icon-btn js-max" aria-label="Expandir código" title="Expandir">⇤</button>
+            <span>Código</span>
+          </div>
+          <div class="panel__body">
+            <p class="code-file" id="codeFile"></p>
+            <ol class="code" id="code"></ol>
+            <div class="vars" id="vars"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Barra de pasos (queda fija abajo mientras recorres el simulador) -->
+      <div class="bar">
+        <div class="bar__step">
+          <span class="pill" id="stepPill">1 / 7</span>
+          <span id="caption" aria-live="polite"></span>
+        </div>
+        <div class="bar__controls">
+          <div class="dots" id="dots"></div>
+          <button class="btn btn--ghost" id="prev">← Anterior</button>
+          <button class="btn btn--primary" id="play">▶ Reproducir</button>
+          <button class="btn btn--ghost" id="next">Siguiente →</button>
+        </div>
+      </div>
+      <p class="hint">Flechas ← → del teclado para avanzar. Minimiza con "—" los paneles que no necesites.</p>
+    </div>
+  </section>
+
+  <!-- ============ 03 RESULTADO ============ -->
+  <section id="resultado" class="section container">
+    <p class="eyebrow">03 · RESULTADO</p>
+    <h2>La misma escena, dos finales</h2>
+    <div class="results">
+      <article class="result result--bad">
+        <p class="result__label">Sin sincronización</p>
+        <p class="result__value"><b>−1</b> copias disponibles</p>
+        <p class="result__verdict">INCONSISTENTE</p>
+        <ul>
+          <li>Ana y Luis leyeron 1 antes de que alguien restara.</li>
+          <li>Los dos pasaron la validación y los dos restaron.</li>
+          <li>El historial registra 2 préstamos de una sola copia.</li>
+        </ul>
+      </article>
+      <article class="result result--good">
+        <p class="result__label">Con mutex (threading.Lock)</p>
+        <p class="result__value"><b>0</b> copias disponibles</p>
+        <p class="result__verdict">CONSISTENTE</p>
+        <ul>
+          <li>Solo quien tiene la llave entra a la sección crítica.</li>
+          <li>Luis espera, entra después y lee el valor real: 0.</li>
+          <li>1 préstamo, 1 rechazo y el inventario cuadra.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <footer class="footer container">
+    Proyecto Biblioteca Digital · Sistemas Operativos · 2026 PAO II
+  </footer>
+
+  <script src="codigo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
