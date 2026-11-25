@@ -13,6 +13,16 @@ Sistema que administra préstamos y devoluciones de libros digitales, controland
 - `evidencias/`: salidas de ejecución (`.txt`) y figuras usadas en el informe.
 - `Proyecto_Sistemas.docx`: informe con la sección crítica, la justificación del mutex, la tabla de resultados y las evidencias.
 
+## Ver la web explicativa
+
+```bash
+git clone <url-del-repo>
+cd Biblioteca-Digital-SO
+python servidor.py        # abre http://localhost:8000 en el navegador
+```
+
+Usa solo la librería estándar de Python. Si el puerto 8000 está ocupado: `python servidor.py 8080`.
+
 ## Cómo ejecutar
 
 Requiere Python 3, sin dependencias externas. Desde la carpeta del proyecto:
